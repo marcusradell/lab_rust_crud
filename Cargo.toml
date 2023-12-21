@@ -7,6 +7,16 @@ edition = "2021"
 
 [dependencies]
 axum = "0.7.2"
+http-body-util = "0.1.0"
+hyper-util = { version = "0.1.2", features = ["client", "client-legacy"] }
+mime = "0.3.17"
+serde = "1.0.193"
+serde_json = "1.0.108"
+tokio = {version = "1.35.1", features = ["macros","rt-multi-thread"]}
+tower = "0.4.13"
+tower-http = {version = "0.5.0", features = ["trace"]}
+tracing = "0.1.40"
+tracing-subscriber = {version = "0.3.18", features = ["env-filter"]}
 
 [dev-dependencies]
-hyper = { version = "1.1.0", features = ["client"] }
+reqwest = { version = "0.11.23", features = ["json"] }
