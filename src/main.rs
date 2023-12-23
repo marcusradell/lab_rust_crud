@@ -1,5 +1,5 @@
+mod app_router;
 mod logging;
-mod router;
 
 #[tokio::main]
 async fn main() {
@@ -11,5 +11,7 @@ async fn main() {
 
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
 
-    axum::serve(listener, router::create()).await.unwrap();
+    let router = app_router::create();
+
+    axum::serve(listener, router).await.unwrap();
 }
