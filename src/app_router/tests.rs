@@ -10,6 +10,24 @@ use serde_json::{json, Value};
 use tower::ServiceExt; // for `call`, `oneshot`, and `ready`
 
 #[tokio::test]
+async fn status_ok() {
+    let router = create();
+
+    let response = router
+        .oneshot(
+            Request::builder()
+                .method(http::Method::GET)
+                .uri("/status")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+}
+
+#[tokio::test]
 async fn json() {
     let router = create();
 

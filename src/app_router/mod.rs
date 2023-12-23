@@ -10,6 +10,7 @@ mod tests;
 
 pub fn create() -> Router {
     Router::new()
+        .route("/status", get(|| async {}))
         .route("/", get(|| async { "Hello, World!" }))
         .route(
             "/json",
