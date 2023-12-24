@@ -1,4 +1,5 @@
 mod app_router;
+mod kits;
 mod logging;
 
 #[tokio::main]
