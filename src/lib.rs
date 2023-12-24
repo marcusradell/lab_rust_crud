@@ -3,7 +3,6 @@ mod kits;
 mod logging;
 
 pub async fn lib() {
-    println!("lib");
     logging::init();
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
