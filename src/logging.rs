@@ -1,4 +1,3 @@
-
 pub fn init() {
     use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 

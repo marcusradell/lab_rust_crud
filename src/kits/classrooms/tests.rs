@@ -18,7 +18,7 @@ pub async fn create_classroom() {
         .oneshot(
             Request::builder()
                 .method(http::Method::POST)
-                .uri("/classrooms/create")
+                .uri("/create")
                 .header(http::header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
                 .body(Body::from(
                     serde_json::to_vec(&json!({

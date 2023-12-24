@@ -1,21 +1,12 @@
-use axum::{
-    routing::{get, post},
-    Json, Router,
-};
-
+use crate::kits::classrooms;
+use axum::{routing::get, Router};
 use tower_http::trace::TraceLayer;
 
-mod tests;
-
 pub fn create() -> Router {
+    let api_router = Router::new().nest("/classrooms", classrooms::create_router());
+
     Router::new()
         .route("/status", get(|| async {}))
-        .route(
-            "/json",
-            post(|payload: Json<serde_json::Value>| async move {
-                Json(serde_json::json!({ "data": payload.0 }))
-            }),
-        )
-        // We can still add middleware
+        .nest("/api", api_router)
         .layer(TraceLayer::new_for_http())
 }

@@ -1,10 +1,18 @@
-use axum::{routing::get, Router};
+mod app_router;
+mod kits;
+mod logging;
 
 pub async fn lib() {
-    // build our application with a single route
-    let app = Router::new().route("/", get(|| async { "Hello, World!" }));
+    println!("lib");
+    logging::init();
 
-    // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+        .await
+        .unwrap();
+
+    tracing::debug!("listening on {}", listener.local_addr().unwrap());
+
+    let router = app_router::create();
+
+    axum::serve(listener, router).await.unwrap();
 }

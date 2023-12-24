@@ -5,7 +5,7 @@ mod tests;
 
 pub fn create_router() -> Router {
     Router::new().route(
-        "/classrooms/create",
+        "/create",
         post(|| async {
             Json(json!({
                     "title": "Fullstack Rust",
