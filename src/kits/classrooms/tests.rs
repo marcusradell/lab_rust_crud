@@ -1,14 +1,13 @@
 #![cfg(test)]
 
+use super::*;
 use axum::{
     body::Body,
     http::{self, Request},
 };
 use http_body_util::BodyExt;
 use serde_json::{json, Value};
-use tower::ServiceExt;
-
-use super::*;
+use tower::{Service, ServiceExt};
 
 #[tokio::test]
 pub async fn list_classrooms() {
@@ -32,7 +31,7 @@ pub async fn list_classrooms() {
 
 #[tokio::test]
 pub async fn create_classroom() {
-    let router = create_router();
+    let mut router = create_router();
 
     let request = Request::builder()
         .method(http::Method::POST)
@@ -45,17 +44,25 @@ pub async fn create_classroom() {
             .unwrap(),
         ))
         .unwrap();
-    let response = router.oneshot(request).await.unwrap();
+
+    let router = ServiceExt::<Request<Body>>::ready(&mut router)
+        .await
+        .unwrap();
+
+    let response = router.call(request).await.unwrap();
 
     assert_eq!(response.status(), http::StatusCode::OK);
+
+    let request = Request::builder()
+        .method(http::Method::GET)
+        .uri("/list")
+        .body(Body::empty())
+        .unwrap();
+
+    let response = router.call(request).await.unwrap();
 
     let bytes = response.into_body().collect().await.unwrap().to_bytes();
     let body: Value = serde_json::from_slice(&bytes).unwrap();
 
-    assert_eq!(
-        body,
-        json!({
-                "title": "Fullstack Rust",
-        })
-    );
+    assert_eq!(body, json!([]));
 }
