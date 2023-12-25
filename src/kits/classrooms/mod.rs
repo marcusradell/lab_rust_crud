@@ -5,7 +5,7 @@ use axum::{
     Json, Router,
 };
 
-use self::repo::Repo;
+use self::{classroom::Classroom, repo::Repo};
 
 mod classroom;
 mod repo;
@@ -32,11 +32,14 @@ impl ClassroomsKit {
     }
 
     pub fn create_router(&self) -> Router {
-        let this = self.clone();
-        let list = this.list();
+        let list_self = self.clone();
+        let create_self = self.clone();
 
         Router::new()
-            .route("/list", get(move || async { Json(list) }))
-            .route("/create", post(|| async {}))
+            .route("/list", get(move || async move { Json(list_self.list()) }))
+            .route(
+                "/create",
+                post(|body: Json<Classroom>| async move { create_self.create(body.0) }),
+            )
     }
 }
