@@ -11,7 +11,7 @@ use tower::{Service, ServiceExt};
 
 #[tokio::test]
 pub async fn list_classrooms() {
-    let router = create_router();
+    let router = ClassroomsKit::new().create_router();
 
     let request = Request::builder()
         .method(http::Method::GET)
@@ -31,7 +31,7 @@ pub async fn list_classrooms() {
 
 #[tokio::test]
 pub async fn create_classroom() {
-    let mut router = create_router();
+    let mut router = ClassroomsKit::new().create_router();
 
     let request = Request::builder()
         .method(http::Method::POST)
