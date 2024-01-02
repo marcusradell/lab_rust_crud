@@ -18,7 +18,7 @@ impl Repo {
         self.data.values().cloned().collect()
     }
 
-    pub fn create(&mut self, classroom: Scorecard) {
-        self.data.insert(classroom.title().to_string(), classroom);
+    pub fn create(&mut self, scorecard: Scorecard) {
+        self.data.insert(scorecard.title.clone(), scorecard);
     }
 }

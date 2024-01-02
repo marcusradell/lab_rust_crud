@@ -1,18 +1,8 @@
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug)]
 pub struct Scorecard {
+    pub id: Uuid,
     pub title: String,
-}
-
-impl Scorecard {
-    pub fn new(title: &str) -> Self {
-        Self {
-            title: title.to_string(),
-        }
-    }
-
-    pub fn title(&self) -> &str {
-        &self.title
-    }
 }
