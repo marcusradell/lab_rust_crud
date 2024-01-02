@@ -1,9 +1,9 @@
-use crate::kits::classrooms::ClassroomsKit;
+use crate::kits::scorecards::ScorecardsKit;
 use axum::{routing::get, Router};
 use tower_http::trace::TraceLayer;
 
 pub fn create() -> Router {
-    let api_router = Router::new().nest("/classrooms", ClassroomsKit::new().create_router());
+    let api_router = Router::new().nest("/scorecards", ScorecardsKit::new().create_router());
 
     Router::new()
         .route("/status", get(|| async {}))

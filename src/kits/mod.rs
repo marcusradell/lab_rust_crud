@@ -1,1 +1,1 @@
-pub mod classrooms;
+pub mod scorecards;

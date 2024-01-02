@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-use super::classroom::Classroom;
+use super::scorecard::Scorecard;
 
 #[derive(Clone)]
 pub struct Repo {
-    data: HashMap<String, Classroom>,
+    data: HashMap<String, Scorecard>,
 }
 
 impl Repo {
@@ -14,11 +14,11 @@ impl Repo {
         }
     }
 
-    pub fn list(&self) -> Vec<Classroom> {
+    pub fn list(&self) -> Vec<Scorecard> {
         self.data.values().cloned().collect()
     }
 
-    pub fn create(&mut self, classroom: Classroom) {
+    pub fn create(&mut self, classroom: Scorecard) {
         self.data.insert(classroom.title().to_string(), classroom);
     }
 }

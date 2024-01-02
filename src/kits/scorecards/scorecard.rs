@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug)]
-pub struct Classroom {
+pub struct Scorecard {
     pub title: String,
 }
 
-impl Classroom {
+impl Scorecard {
     pub fn new(title: &str) -> Self {
         Self {
             title: title.to_string(),

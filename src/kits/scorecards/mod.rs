@@ -5,29 +5,29 @@ use axum::{
     Json, Router,
 };
 
-use self::{classroom::Classroom, repo::Repo};
+use self::{repo::Repo, scorecard::Scorecard};
 
-mod classroom;
 mod repo;
+mod scorecard;
 mod tests;
 
 #[derive(Clone)]
-pub struct ClassroomsKit {
+pub struct ScorecardsKit {
     repo: Arc<Mutex<Repo>>,
 }
 
-impl ClassroomsKit {
+impl ScorecardsKit {
     pub fn new() -> Self {
         Self {
             repo: Arc::new(Mutex::new(Repo::new())),
         }
     }
 
-    pub fn list(&self) -> Vec<classroom::Classroom> {
+    pub fn list(&self) -> Vec<scorecard::Scorecard> {
         self.repo.lock().unwrap().list()
     }
 
-    pub fn create(&self, classroom: classroom::Classroom) {
+    pub fn create(&self, classroom: scorecard::Scorecard) {
         self.repo.lock().unwrap().create(classroom);
     }
 
@@ -39,7 +39,7 @@ impl ClassroomsKit {
             .route("/list", get(move || async move { Json(list_self.list()) }))
             .route(
                 "/create",
-                post(|body: Json<Classroom>| async move { create_self.create(body.0) }),
+                post(|body: Json<Scorecard>| async move { create_self.create(body.0) }),
             )
     }
 }
