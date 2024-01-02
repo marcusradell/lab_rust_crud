@@ -19,7 +19,7 @@ async fn create_scorecard() {
 
     let scorecard = Scorecard {
         id: Uuid::new_v4(),
-        title: "Marcus Rådell".to_string(),
+        full_name: "Marcus Rådell".to_string(),
     };
 
     kit.create(scorecard.clone());

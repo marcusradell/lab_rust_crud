@@ -18,6 +18,6 @@ impl Repo {
     }
 
     pub fn create(&mut self, scorecard: Scorecard) {
-        self.data.insert(scorecard.title.clone(), scorecard);
+        self.data.insert(scorecard.full_name.clone(), scorecard);
     }
 }

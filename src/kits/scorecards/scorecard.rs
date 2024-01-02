@@ -4,5 +4,5 @@ use uuid::Uuid;
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug)]
 pub struct Scorecard {
     pub id: Uuid,
-    pub title: String,
+    pub full_name: String,
 }
