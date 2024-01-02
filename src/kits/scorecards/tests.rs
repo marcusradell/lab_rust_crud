@@ -15,9 +15,9 @@ async fn list_scorecards() {
 async fn create_scorecard() {
     let kit = ScorecardsKit::new();
 
-    kit.create(Scorecard::new("Fullstack Rust"));
+    kit.create(Scorecard::new("Marcus Rådell"));
 
     let result = kit.list();
 
-    assert_eq!(result, vec![Scorecard::new("Fullstack Rust")]);
+    assert_eq!(result, vec![Scorecard::new("Marcus Rådell")]);
 }
