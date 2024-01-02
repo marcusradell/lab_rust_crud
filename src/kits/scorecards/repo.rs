@@ -1,6 +1,5 @@
-use std::collections::HashMap;
-
 use super::scorecard::Scorecard;
+use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct Repo {

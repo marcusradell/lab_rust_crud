@@ -1,11 +1,9 @@
-use std::sync::{Arc, Mutex};
-
+use self::{repo::Repo, scorecard::Scorecard};
 use axum::{
     routing::{get, post},
     Json, Router,
 };
-
-use self::{repo::Repo, scorecard::Scorecard};
+use std::sync::{Arc, Mutex};
 
 mod repo;
 mod scorecard;
