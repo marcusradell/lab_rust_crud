@@ -1,4 +1,7 @@
-use self::{repo::Repo, scorecard::Scorecard};
+use self::{
+    repo::{InMemoryDb, Repo},
+    scorecard::Scorecard,
+};
 use axum::{
     routing::{get, post},
     Json, Router,
@@ -11,13 +14,13 @@ mod tests;
 
 #[derive(Clone)]
 pub struct ScorecardsKit {
-    repo: Arc<Mutex<Repo>>,
+    repo: Arc<Mutex<InMemoryDb>>,
 }
 
 impl ScorecardsKit {
     pub fn new() -> Self {
         Self {
-            repo: Arc::new(Mutex::new(Repo::new())),
+            repo: Arc::new(Mutex::new(InMemoryDb::new())),
         }
     }
 
