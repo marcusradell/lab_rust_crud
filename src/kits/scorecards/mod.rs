@@ -6,7 +6,6 @@ use axum::{
 use std::error::Error;
 
 mod db;
-mod mock_db;
 mod repo;
 mod scorecard;
 mod tests;
