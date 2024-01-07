@@ -8,7 +8,7 @@ use super::*;
 async fn list_scorecards() {
     let kit = ScorecardsKit::new();
 
-    let result = kit.list();
+    let result = kit.list().await.unwrap();
 
     assert_eq!(result, vec![]);
 }
@@ -24,7 +24,7 @@ async fn create_scorecard() {
 
     kit.create(scorecard.clone());
 
-    let result = kit.list();
+    let result = kit.list().await.unwrap();
 
     assert_eq!(result, vec![scorecard]);
 }

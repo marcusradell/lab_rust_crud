@@ -3,8 +3,12 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use std::sync::{Arc, Mutex};
+use std::{
+    error::Error,
+    sync::{Arc, Mutex},
+};
 
+mod db;
 mod mock_db;
 mod repo;
 mod scorecard;
@@ -22,23 +26,30 @@ impl ScorecardsKit {
         }
     }
 
-    pub fn list(&self) -> Vec<scorecard::Scorecard> {
-        self.repo.lock().unwrap().list()
+    pub async fn list(&self) -> Result<Vec<scorecard::Scorecard>, Box<dyn Error>> {
+        self.repo.lock().unwrap().list().await
     }
 
-    pub fn create(&self, classroom: scorecard::Scorecard) {
-        self.repo.lock().unwrap().create(classroom);
+    pub async fn create(&self, classroom: scorecard::Scorecard) -> Result<(), Box<dyn Error>> {
+        self.repo.lock().unwrap().create(classroom).await
     }
 
     pub fn create_router(&self) -> Router {
-        let list_self = self.clone();
-        let create_self = self.clone();
-
         Router::new()
-            .route("/list", get(move || async move { Json(list_self.list()) }))
+            .route(
+                "/list",
+                get({
+                    let this = self.clone();
+
+                    || async move { Json(this.list().await.unwrap()) }
+                }),
+            )
             .route(
                 "/create",
-                post(|body: Json<Scorecard>| async move { create_self.create(body.0) }),
+                post({
+                    let this = self.clone();
+                    |body: Json<Scorecard>| async move { this.create(body.0).await.unwrap() }
+                }),
             )
     }
 }
