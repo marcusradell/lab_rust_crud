@@ -15,14 +15,14 @@ async fn list_scorecards() {
 
 #[tokio::test]
 async fn create_scorecard() {
-    let kit = ScorecardsKit::new();
+    let mut kit = ScorecardsKit::new();
 
     let scorecard = Scorecard {
         id: Uuid::new_v4(),
         full_name: "Marcus Rådell".to_string(),
     };
 
-    kit.create(scorecard.clone());
+    kit.create(scorecard.clone()).await.unwrap();
 
     let result = kit.list().await.unwrap();
 

@@ -13,11 +13,14 @@ pub trait Repo {
 #[async_trait::async_trait]
 impl Repo for InMemoryDb {
     async fn list(&self) -> Result<Vec<Scorecard>, Box<dyn Error>> {
-        Ok(self.data.values().cloned().collect())
+        Ok(self.data.lock().unwrap().values().cloned().collect())
     }
 
     async fn create(&mut self, scorecard: Scorecard) -> Result<(), Box<dyn Error>> {
-        self.data.insert(scorecard.full_name.clone(), scorecard);
+        self.data
+            .lock()
+            .unwrap()
+            .insert(scorecard.full_name.clone(), scorecard);
         Ok(())
     }
 }

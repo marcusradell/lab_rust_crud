@@ -16,22 +16,22 @@ mod tests;
 
 #[derive(Clone)]
 pub struct ScorecardsKit {
-    repo: Arc<Mutex<InMemoryDb>>,
+    repo: InMemoryDb,
 }
 
 impl ScorecardsKit {
     pub fn new() -> Self {
         Self {
-            repo: Arc::new(Mutex::new(InMemoryDb::new())),
+            repo: InMemoryDb::new(),
         }
     }
 
     pub async fn list(&self) -> Result<Vec<scorecard::Scorecard>, Box<dyn Error>> {
-        self.repo.lock().unwrap().list().await
+        self.repo.list().await
     }
 
-    pub async fn create(&self, classroom: scorecard::Scorecard) -> Result<(), Box<dyn Error>> {
-        self.repo.lock().unwrap().create(classroom).await
+    pub async fn create(&mut self, classroom: scorecard::Scorecard) -> Result<(), Box<dyn Error>> {
+        self.repo.create(classroom).await
     }
 
     pub fn create_router(&self) -> Router {
@@ -40,14 +40,16 @@ impl ScorecardsKit {
                 "/list",
                 get({
                     let this = self.clone();
-
-                    || async move { Json(this.list().await.unwrap()) }
+                    || async move {
+                        let scorecards = this.list().await.unwrap();
+                        Json(scorecards)
+                    }
                 }),
             )
             .route(
                 "/create",
                 post({
-                    let this = self.clone();
+                    let mut this = self.clone();
                     |body: Json<Scorecard>| async move { this.create(body.0).await.unwrap() }
                 }),
             )
