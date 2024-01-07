@@ -6,7 +6,7 @@ use super::*;
 
 #[tokio::test]
 async fn list_scorecards() {
-    let kit = ScorecardsKit::new().await;
+    let kit = Kit::new().await;
 
     let result = kit.list().await.unwrap();
 
@@ -15,7 +15,7 @@ async fn list_scorecards() {
 
 #[tokio::test]
 async fn create_scorecard() {
-    let mut kit = ScorecardsKit::new().await;
+    let mut kit = Kit::new().await;
 
     let scorecard = Scorecard {
         id: Uuid::new_v4(),

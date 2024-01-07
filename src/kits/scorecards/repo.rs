@@ -2,7 +2,7 @@ use std::error::Error;
 
 use sqlx::{query, query_as};
 
-use super::scorecard::Scorecard;
+use super::model::Scorecard;
 use crate::io::db::Db;
 
 #[async_trait::async_trait]

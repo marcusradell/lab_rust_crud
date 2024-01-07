@@ -1,4 +1,4 @@
-use self::{repo::Repo, scorecard::Scorecard};
+use self::{model::Scorecard, repo::Repo};
 use crate::io::db::Db;
 use axum::{
     routing::{get, post},
@@ -6,32 +6,36 @@ use axum::{
 };
 use std::error::Error;
 
+mod model;
 mod repo;
-mod scorecard;
 mod tests;
 
 #[derive(Clone)]
-pub struct ScorecardsKit {
+pub struct Kit {
     repo: Db,
 }
 
-impl ScorecardsKit {
+impl Kit {
     pub async fn new() -> Self {
         Self {
             repo: Db::new().await,
         }
     }
 
-    pub async fn list(&self) -> Result<Vec<scorecard::Scorecard>, Box<dyn Error>> {
+    pub fn name() -> &'static str {
+        module_path!().split("::").last().unwrap()
+    }
+
+    pub async fn list(&self) -> Result<Vec<model::Scorecard>, Box<dyn Error>> {
         self.repo.list().await
     }
 
-    pub async fn create(&mut self, classroom: scorecard::Scorecard) -> Result<(), Box<dyn Error>> {
+    pub async fn create(&mut self, classroom: model::Scorecard) -> Result<(), Box<dyn Error>> {
         self.repo.create(classroom).await
     }
 
     pub fn create_router(&self) -> Router {
-        Router::new()
+        let routes = Router::new()
             .route(
                 "/list",
                 get({
@@ -48,6 +52,8 @@ impl ScorecardsKit {
                     let mut this = self.clone();
                     |body: Json<Scorecard>| async move { this.create(body.0).await.unwrap() }
                 }),
-            )
+            );
+
+        Router::new().nest(&format!("/{}", Self::name()), routes)
     }
 }
