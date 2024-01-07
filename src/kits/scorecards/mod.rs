@@ -16,10 +16,8 @@ pub struct Kit {
 }
 
 impl Kit {
-    pub async fn new() -> Self {
-        Self {
-            repo: Db::new().await,
-        }
+    pub fn new(repo: Db) -> Self {
+        Self { repo }
     }
 
     pub fn name() -> &'static str {
