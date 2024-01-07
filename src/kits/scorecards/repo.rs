@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use sqlx::query_as;
+use sqlx::{query, query_as};
 
 use super::{db::Db, mock_db::InMemoryDb, scorecard::Scorecard};
 
@@ -35,6 +35,15 @@ impl Repo for Db {
     }
 
     async fn create(&mut self, scorecard: Scorecard) -> Result<(), Box<dyn Error>> {
-        todo!()
+        query!(
+            "INSERT INTO scorecards (id, full_name) VALUES ($1, $2)",
+            scorecard.id,
+            scorecard.full_name
+        )
+        .execute(&self.pool)
+        .await
+        .unwrap();
+
+        Ok(())
     }
 }

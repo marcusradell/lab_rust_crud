@@ -1,12 +1,9 @@
-use self::{mock_db::InMemoryDb, repo::Repo, scorecard::Scorecard};
+use self::{db::Db, repo::Repo, scorecard::Scorecard};
 use axum::{
     routing::{get, post},
     Json, Router,
 };
-use std::{
-    error::Error,
-    sync::{Arc, Mutex},
-};
+use std::error::Error;
 
 mod db;
 mod mock_db;
@@ -16,13 +13,13 @@ mod tests;
 
 #[derive(Clone)]
 pub struct ScorecardsKit {
-    repo: InMemoryDb,
+    repo: Db,
 }
 
 impl ScorecardsKit {
-    pub fn new() -> Self {
+    pub async fn new() -> Self {
         Self {
-            repo: InMemoryDb::new(),
+            repo: Db::new().await,
         }
     }
 

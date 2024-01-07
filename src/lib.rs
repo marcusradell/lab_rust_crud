@@ -11,7 +11,7 @@ pub async fn lib() {
 
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
 
-    let router = app_router::create();
+    let router = app_router::create().await;
 
     axum::serve(listener, router).await.unwrap();
 }
