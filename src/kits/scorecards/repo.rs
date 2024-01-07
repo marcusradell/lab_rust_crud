@@ -1,22 +1,8 @@
-use super::scorecard::Scorecard;
-use std::collections::HashMap;
+use super::{mock_db::InMemoryDb, scorecard::Scorecard};
 
 pub trait Repo {
     fn list(&self) -> Vec<Scorecard>;
     fn create(&mut self, scorecard: Scorecard);
-}
-
-#[derive(Clone)]
-pub struct InMemoryDb {
-    data: HashMap<String, Scorecard>,
-}
-
-impl InMemoryDb {
-    pub fn new() -> Self {
-        Self {
-            data: HashMap::new(),
-        }
-    }
 }
 
 impl Repo for InMemoryDb {

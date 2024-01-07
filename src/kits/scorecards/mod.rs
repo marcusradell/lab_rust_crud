@@ -1,13 +1,11 @@
-use self::{
-    repo::{InMemoryDb, Repo},
-    scorecard::Scorecard,
-};
+use self::{mock_db::InMemoryDb, repo::Repo, scorecard::Scorecard};
 use axum::{
     routing::{get, post},
     Json, Router,
 };
 use std::sync::{Arc, Mutex};
 
+mod mock_db;
 mod repo;
 mod scorecard;
 mod tests;
