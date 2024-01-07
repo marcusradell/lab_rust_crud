@@ -1,11 +1,11 @@
-use self::{db::Db, repo::Repo, scorecard::Scorecard};
+use self::{repo::Repo, scorecard::Scorecard};
+use crate::io::db::Db;
 use axum::{
     routing::{get, post},
     Json, Router,
 };
 use std::error::Error;
 
-mod db;
 mod repo;
 mod scorecard;
 mod tests;
