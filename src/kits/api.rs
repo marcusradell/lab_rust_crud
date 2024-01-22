@@ -1,7 +1,7 @@
 use crate::kits::scorecards::Kit;
 use axum::Router;
 
-pub async fn create() -> Router {
+pub async fn router() -> Router {
     let db = crate::io::db::Db::new().await;
 
     let scorecards_kit = Kit::new(db);
