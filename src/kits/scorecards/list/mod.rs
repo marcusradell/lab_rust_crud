@@ -1,6 +1,6 @@
 use self::repo::Repo;
 use super::{dto::Scorecard, Kit};
-use crate::io::result::Result;
+use crate::io::{result::Result, route_path::route_path};
 use axum::{routing::get, Json, Router};
 
 mod repo;
@@ -19,7 +19,7 @@ impl List for Kit {
 
 pub fn route(kit: Kit) -> Router {
     Router::new().route(
-        &format!("/{}", module_path!().split("::").last().unwrap()),
+        route_path!(),
         get({
             || async move {
                 let scorecards = kit.list().await.unwrap();

@@ -1,4 +1,4 @@
-use crate::io::routable::Routable;
+use crate::io::{routable::Routable, route_path::route_path};
 use axum::Router;
 
 pub async fn router(kits: Vec<impl Routable>) -> Router {
@@ -8,8 +8,5 @@ pub async fn router(kits: Vec<impl Routable>) -> Router {
         merged_router = merged_router.merge(kit.router());
     }
 
-    Router::new().nest(
-        &format!("/{}", module_path!().split("::").last().unwrap()),
-        merged_router,
-    )
+    Router::new().nest(route_path!(), merged_router)
 }
