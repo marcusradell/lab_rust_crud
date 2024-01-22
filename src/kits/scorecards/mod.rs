@@ -1,4 +1,4 @@
-use crate::io::{db::Db, routable::Routable, route_path::route_path};
+use crate::io::{db::Db, routable::Routable, route_path::route_path, router::kit_router};
 use axum::Router;
 
 pub mod create;
@@ -17,13 +17,4 @@ impl Kit {
     }
 }
 
-impl Routable for Kit {
-    fn router(&self) -> Router {
-        Router::new().nest(
-            route_path!(),
-            Router::new()
-                .merge(list::route(self.clone()))
-                .merge(create::route(self.clone())),
-        )
-    }
-}
+kit_router!(create, list);
