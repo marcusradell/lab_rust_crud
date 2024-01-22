@@ -1,11 +1,16 @@
-use crate::{io::db::Db, kits::scorecards::Kit};
 use axum::Router;
 
-pub async fn router(db: Db) -> Router {
-    let scorecards_kit = Kit::new(db);
+use crate::io::routable::Routable;
+
+pub async fn router(kits: Vec<impl Routable>) -> Router {
+    let mut merged_router = Router::new();
+
+    for kit in kits.iter() {
+        merged_router = merged_router.merge(kit.router());
+    }
 
     Router::new().nest(
         &format!("/{}", module_path!().split("::").last().unwrap()),
-        scorecards_kit.router(),
+        merged_router,
     )
 }

@@ -1,6 +1,8 @@
 use axum::routing::get;
 use tower_http::trace::TraceLayer;
 
+use crate::kits::scorecards;
+
 mod io;
 mod kits;
 
@@ -15,7 +17,9 @@ pub async fn lib() {
 
     let db = crate::io::db::Db::new().await;
 
-    let api_router = kits::api::router(db).await;
+    let scorecards_kit = scorecards::Kit::new(db);
+
+    let api_router = kits::api::router(vec![scorecards_kit]).await;
 
     axum::serve(
         listener,
