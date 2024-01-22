@@ -5,10 +5,10 @@ use tower_http::trace::TraceLayer;
 pub async fn create() -> Router {
     let db = crate::io::db::Db::new().await;
 
-    let scorecards_router = Kit::new(db).router();
+    let scorecards_kit = Kit::new(db);
 
     Router::new()
-        .nest("/api", Router::new().merge(scorecards_router))
+        .nest("/api", scorecards_kit.router())
         .route("/status", get(|| async {}))
         .layer(TraceLayer::new_for_http())
 }
