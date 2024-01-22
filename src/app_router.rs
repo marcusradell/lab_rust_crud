@@ -7,10 +7,8 @@ pub async fn create() -> Router {
 
     let scorecards_router = Kit::new(db).router();
 
-    let api_router = Router::new().merge(scorecards_router);
-
     Router::new()
+        .nest("/api", Router::new().merge(scorecards_router))
         .route("/status", get(|| async {}))
-        .nest("/api", api_router)
         .layer(TraceLayer::new_for_http())
 }
