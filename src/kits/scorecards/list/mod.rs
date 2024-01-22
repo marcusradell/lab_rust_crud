@@ -1,5 +1,5 @@
 use self::repo::Repo;
-use super::{model::Scorecard, Kit};
+use super::{dto::Scorecard, Kit};
 use crate::io::result::Result;
 use axum::{routing::get, Json, Router};
 

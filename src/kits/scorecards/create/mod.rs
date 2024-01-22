@@ -1,4 +1,4 @@
-use super::{model::Scorecard, Kit};
+use super::{dto::Scorecard, Kit};
 use crate::io::result::Result;
 use axum::{routing::post, Json, Router};
 use repo::Repo;

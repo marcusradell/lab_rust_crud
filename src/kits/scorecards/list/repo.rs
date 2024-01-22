@@ -1,4 +1,4 @@
-use crate::{io::db::Db, kits::scorecards::model::Scorecard};
+use crate::{io::db::Db, kits::scorecards::dto::Scorecard};
 use sqlx::query_as;
 use std::error::Error;
 

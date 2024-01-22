@@ -1,9 +1,9 @@
 #![cfg(test)]
 
-use super::model::Scorecard;
+use super::dto::Scorecard;
 use super::*;
-use create::Create;
-use tests::list::List;
+use create::Create as _;
+use list::List as _;
 use uuid::Uuid;
 
 #[tokio::test]

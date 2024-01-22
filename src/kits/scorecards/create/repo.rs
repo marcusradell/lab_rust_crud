@@ -1,6 +1,6 @@
 use crate::{
     io::{db::Db, result::Result},
-    kits::scorecards::model::Scorecard,
+    kits::scorecards::dto::Scorecard,
 };
 use sqlx::query;
 
