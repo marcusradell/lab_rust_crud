@@ -1,9 +1,9 @@
 use crate::io::db::Db;
 use axum::Router;
 
-mod create;
-mod list;
-mod model;
+pub mod create;
+pub mod list;
+pub mod model;
 mod tests;
 
 #[derive(Clone)]
