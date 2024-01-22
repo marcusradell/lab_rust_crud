@@ -1,6 +1,5 @@
-use axum::Router;
-
 use crate::io::routable::Routable;
+use axum::Router;
 
 pub async fn router(kits: Vec<impl Routable>) -> Router {
     let mut merged_router = Router::new();
