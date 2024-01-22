@@ -1,4 +1,7 @@
-mod app_router;
+use axum::routing::get;
+use tower_http::trace::TraceLayer;
+
+mod api;
 mod io;
 mod kits;
 
@@ -11,7 +14,14 @@ pub async fn lib() {
 
     tracing::info!("listening on {}", listener.local_addr().unwrap());
 
-    let router = app_router::create().await;
+    let router = api::create().await;
 
-    axum::serve(listener, router).await.unwrap();
+    axum::serve(
+        listener,
+        router
+            .route("/status", get(|| async {}))
+            .layer(TraceLayer::new_for_http()),
+    )
+    .await
+    .unwrap();
 }
