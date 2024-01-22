@@ -1,11 +1,9 @@
-use self::{model::Scorecard, repo::Repo};
+use self::repo::Repo;
 use crate::io::db::Db;
-use axum::{
-    routing::{get, post},
-    Json, Router,
-};
+use axum::{routing::get, Json, Router};
 use std::error::Error;
 
+mod create;
 mod model;
 mod repo;
 mod tests;
@@ -20,16 +18,8 @@ impl Kit {
         Self { repo }
     }
 
-    pub fn name() -> &'static str {
-        module_path!().split("::").last().unwrap()
-    }
-
     pub async fn list(&self) -> Result<Vec<model::Scorecard>, Box<dyn Error>> {
         self.repo.list().await
-    }
-
-    pub async fn create(&mut self, classroom: model::Scorecard) -> Result<(), Box<dyn Error>> {
-        self.repo.create(classroom).await
     }
 
     pub fn create_router(&self) -> Router {
@@ -44,14 +34,13 @@ impl Kit {
                     }
                 }),
             )
-            .route(
-                "/create",
-                post({
-                    let mut this = self.clone();
-                    |body: Json<Scorecard>| async move { this.create(body.0).await.unwrap() }
-                }),
-            );
+            .merge(create::route(self.clone()));
 
-        Router::new().nest(&format!("/{}", Self::name()), routes)
+        let router = Router::new().nest(
+            &format!("/{}", module_path!().split("::").last().unwrap()),
+            routes,
+        );
+
+        router
     }
 }

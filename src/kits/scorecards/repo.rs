@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use sqlx::{query, query_as};
+use sqlx::query_as;
 
 use super::model::Scorecard;
 use crate::io::db::Db;
@@ -8,7 +8,6 @@ use crate::io::db::Db;
 #[async_trait::async_trait]
 pub trait Repo {
     async fn list(&self) -> Result<Vec<Scorecard>, Box<dyn Error>>;
-    async fn create(&mut self, scorecard: Scorecard) -> Result<(), Box<dyn Error>>;
 }
 
 #[async_trait::async_trait]
@@ -18,18 +17,5 @@ impl Repo for Db {
             .fetch_all(&self.pool)
             .await
             .unwrap())
-    }
-
-    async fn create(&mut self, scorecard: Scorecard) -> Result<(), Box<dyn Error>> {
-        query!(
-            "INSERT INTO scorecards (id, full_name) VALUES ($1, $2)",
-            scorecard.id,
-            scorecard.full_name
-        )
-        .execute(&self.pool)
-        .await
-        .unwrap();
-
-        Ok(())
     }
 }

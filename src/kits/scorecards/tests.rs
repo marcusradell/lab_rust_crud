@@ -1,8 +1,9 @@
 #![cfg(test)]
 
-use uuid::Uuid;
-
+use super::model::Scorecard;
 use super::*;
+use create::Create;
+use uuid::Uuid;
 
 #[tokio::test]
 async fn list_scorecards() {
@@ -17,7 +18,7 @@ async fn list_scorecards() {
 #[tokio::test]
 async fn create_scorecard() {
     let db = Db::new().await;
-    let mut kit = Kit::new(db);
+    let kit = Kit::new(db);
 
     let scorecard = Scorecard {
         id: Uuid::new_v4(),
