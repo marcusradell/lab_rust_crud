@@ -17,9 +17,15 @@ impl Create for Kit {
     }
 }
 
+macro_rules! path {
+    () => {
+        &format!("/{}", module_path!().split("::").last().unwrap())
+    };
+}
+
 pub fn route(kit: Kit) -> Router {
     Router::new().route(
-        &format!("/{}", module_path!().split("::").last().unwrap()),
+        path!(),
         post(|body: Json<Scorecard>| async move { kit.create(body.0).await.unwrap() }),
     )
 }
