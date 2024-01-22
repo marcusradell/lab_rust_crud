@@ -3,6 +3,7 @@
 use super::model::Scorecard;
 use super::*;
 use create::Create;
+use tests::list::List;
 use uuid::Uuid;
 
 #[tokio::test]

@@ -1,11 +1,9 @@
-use self::repo::Repo;
 use crate::io::db::Db;
-use axum::{routing::get, Json, Router};
-use std::error::Error;
+use axum::Router;
 
 mod create;
+mod list;
 mod model;
-mod repo;
 mod tests;
 
 #[derive(Clone)]
@@ -18,29 +16,12 @@ impl Kit {
         Self { repo }
     }
 
-    pub async fn list(&self) -> Result<Vec<model::Scorecard>, Box<dyn Error>> {
-        self.repo.list().await
-    }
-
-    pub fn create_router(&self) -> Router {
-        let routes = Router::new()
-            .route(
-                "/list",
-                get({
-                    let this = self.clone();
-                    || async move {
-                        let scorecards = this.list().await.unwrap();
-                        Json(scorecards)
-                    }
-                }),
-            )
-            .merge(create::route(self.clone()));
-
-        let router = Router::new().nest(
+    pub fn router(&self) -> Router {
+        Router::new().nest(
             &format!("/{}", module_path!().split("::").last().unwrap()),
-            routes,
-        );
-
-        router
+            Router::new()
+                .merge(list::route(self.clone()))
+                .merge(create::route(self.clone())),
+        )
     }
 }

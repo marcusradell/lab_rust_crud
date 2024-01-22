@@ -1,9 +1,6 @@
-use std::error::Error;
-
+use crate::{io::db::Db, kits::scorecards::model::Scorecard};
 use sqlx::query_as;
-
-use super::model::Scorecard;
-use crate::io::db::Db;
+use std::error::Error;
 
 #[async_trait::async_trait]
 pub trait Repo {
