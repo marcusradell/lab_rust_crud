@@ -13,7 +13,9 @@ pub async fn lib() {
 
     tracing::info!("listening on {}", listener.local_addr().unwrap());
 
-    let api_router = kits::api::router().await;
+    let db = crate::io::db::Db::new().await;
+
+    let api_router = kits::api::router(db).await;
 
     axum::serve(
         listener,
